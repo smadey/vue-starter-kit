@@ -1,0 +1,50 @@
+@import "./variable.scss";
+
+%clearfix {
+  &:after, &:before {
+      display: table;
+      content: ' ';
+  }
+
+  &:after {
+      clear: both;
+  }
+}
+
+.clearfix {
+  @extend %clearfix;
+}
+
+.container {
+  @extend %clearfix;
+  margin-left: auto;
+  margin-right: auto;
+  width: $container-width;
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.tc {
+  text-align: center;
+}
+
+.tr {
+  text-align: right;
+}
+
+.dib {
+  display: inline-block;
+}
+
+.toe {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
+}

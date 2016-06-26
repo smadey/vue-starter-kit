@@ -1,0 +1,8 @@
+{
+  "env": {
+    "production": {
+      "plugins": ["transform-node-env-inline"]
+    }
+  },
+  "presets": ["es2015"]
+}

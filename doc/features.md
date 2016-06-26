@@ -1,0 +1,7 @@
+- [x] Vue + Webpack + ES6 + Sass + ESLint + PostCSS
+- [x] 公用模块提取
+- [x] CSS模块提取
+- [x] 文件Hash
+- [x] 静态资源提取
+- [ ] 接入CDN
+- [ ] 服务器端ESLint

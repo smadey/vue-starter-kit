@@ -1,0 +1,17 @@
+{
+  "globals": {
+  },
+  "extends": "airbnb-base",
+  "env": {
+    "browser": true
+  },
+  "rules": {
+    "func-names": "off",
+    "global-require": "off",
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "import/no-unresolved": "off",
+    "no-new": "off",
+    "no-param-reassign": "off",
+    "vars-on-top": "off"
+  }
+}
