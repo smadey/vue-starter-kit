@@ -64,10 +64,11 @@ module.exports = {
         },
       },
       {
-        test: /\.(xlsx|woff|woff2|eot(\?#iefix)?|ttf|svg\?#iconfont)$/i,
+        test: /fonts\/.*\/.*\.(woff|woff2|eot(\?#iefix)?|ttf|svg\?#iconfont)$/i,
         loader: 'file-loader',
         query: {
           name: filename + '.[ext]',
+          publicPath: '/',
         },
       },
       {

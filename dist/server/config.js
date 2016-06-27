@@ -11,7 +11,7 @@ module.exports = {
 
   publicPath: IS_PRO ? 'http://localhost:8082/' : '/',
 
-  qiniu: { // 使用cdn时需要注意css中引用的fontyou跨域问题
+  qiniu: { // 使用cdn时需要注意css中引用的font有跨域问题
     access: 'access',
     secret: 'secret',
     bucket: 'bucket'
