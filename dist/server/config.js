@@ -9,7 +9,7 @@ module.exports = {
 
   port: process.env.PORT || 8080,
 
-  publicPath: IS_PRO ? 'http://localhost:8082/' : '/',
+  publicPath: IS_PRO ? '/' : '/',
 
   qiniu: { // 使用cdn时需要注意css中引用的font有跨域问题
     access: 'access',

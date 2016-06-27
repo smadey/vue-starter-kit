@@ -64,7 +64,7 @@ module.exports = {
         },
       },
       {
-        test: /fonts\/.*\/.*\.(woff|woff2|eot(\?#iefix)?|ttf|svg\?#iconfont)$/i,
+        test: /.(woff|woff2|eot(\?#iefix)?|ttf|svg\?#iconfont)$/i,
         loader: 'file-loader',
         query: {
           name: filename + '.[ext]',
