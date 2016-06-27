@@ -56,19 +56,10 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|jpg|gif|svg)$/i,
-        loader: 'url-loader',
-        query: {
-          name: filename + '.[ext]',
-          limit: 10000,
-        },
-      },
-      {
-        test: /.(woff|woff2|eot(\?#iefix)?|ttf|svg\?#iconfont)$/i,
+        test: /\.(png|jpg|gif|svg|woff|woff2|eot(\?#iefix)?|ttf|(svg#.+))$/i,
         loader: 'file-loader',
         query: {
           name: filename + '.[ext]',
-          publicPath: '/',
         },
       },
       {
@@ -76,10 +67,6 @@ module.exports = {
         loader: 'vue-loader',
       },
     ],
-  },
-  devServer: {
-    historyApiFallback: true,
-    noInfo: true,
   },
   devtool: IS_PRO ? null : 'eval-source-map',
   eslint: {

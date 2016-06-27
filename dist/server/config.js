@@ -9,9 +9,9 @@ module.exports = {
 
   port: process.env.PORT || 8080,
 
-  publicPath: IS_PRO ? '/' : '/',
+  publicPath: IS_PRO ? '/' : '/', // 上传到CDN需要调整此路径，如：'http://localhost:8082/client/'
 
-  qiniu: { // 使用cdn时需要注意css中引用的font有跨域问题
+  qiniu: { // 使用CDN时需要注意CSS中引用的Font有跨域问题
     access: 'access',
     secret: 'secret',
     bucket: 'bucket'
