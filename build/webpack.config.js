@@ -19,7 +19,7 @@ var AUTOPREFIXER_BROWSERS = [
 ];
 
 var IS_PRO = config.IS_PRO;
-var filename = IS_PRO ? (version + '/[name]-' + version) : '[name]';
+var filename = IS_PRO ? (version + '/[name]') : '[name]';
 
 module.exports = {
   entry: {
