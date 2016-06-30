@@ -1,7 +1,7 @@
 import fetch from './fetch';
 
 // 服务器地址
-const serverUrl = '';
+let serverUrl = '';
 
 // 全局请求头
 const headers = {};
@@ -9,11 +9,71 @@ const headers = {};
 // 全局请求参数
 const ajaxData = {};
 
-// 全局返回状态处理
-const statusHandlers = {};
+// 全局状态处理方法
+let statusHandler = null;
 
-// 全局结果检查器，返回true表示结果正常
-let resultChecker = () => true;
+// 全局结果处理方法
+let resultHandler = null;
+
+/**
+ * encode 字符串
+ * @param  {String} value 需要转码的字符串
+ * @return {String} 转码结果
+ */
+function encode(value) {
+  return String(value)
+    .replace(/[^ !'()~\*]/g, encodeURIComponent)
+    .replace(/ /g, '+')
+    .replace(/[!'()~\*]/g, ch => `%${ch.charCodeAt().toString(16).slice(-2).toUpperCase()}`); // eslint-disable-line max-len, newline-per-chained-call
+}
+
+/**
+ * 将请求对象换成字符串
+ * @param  {Object} obj 请求对象
+ * @return {String} 请求字符串
+ */
+function encodeObj(obj) {
+  if (!obj) {
+    return '';
+  }
+
+  const params = [];
+
+  Object.keys(obj).forEach((key) => {
+    let value = obj[key];
+
+    if (value === null || value === undefined) {
+      value = '';
+    }
+
+    params.push(`${encode(key)}=${encode(value)}`);
+  });
+
+  return params.join('&').replace(/%20/g, '+');
+}
+
+/**
+ * 将请求对象换成 "x-www-form-urlencoded" 类型字符串
+ * @param  {Object} obj 请求对象
+ * @return {String} 请求字符串
+ */
+function encodeForm(obj) {
+  function append(newObj, key, value) {
+    if (Array.isArray(value) || (typeof value === 'object' && value !== null)) {
+      Object.keys(value).forEach((k) => {
+        append(newObj, `${key}[${k}]`, value[k]);
+      });
+      return newObj;
+    }
+
+    newObj[key] = value;
+    return newObj;
+  }
+
+  return encodeObj(Object.keys(obj).reduce(
+    (newObj, key) => append(newObj, key, obj[key]), {}
+  ));
+}
 
 /**
  * 获取请求的 headers
@@ -48,72 +108,6 @@ function getAjaxData(_ajaxData = {}) {
 }
 
 /**
- * encode 字符串
- * @param  {String} value 需要转码的字符串
- * @return {String} 转码结果
- */
-function encode(value) {
-  return String(value)
-    .replace(/[^ !'()~\*]/g, encodeURIComponent)
-    .replace(/ /g, '+')
-    .replace(/[!'()~\*]/g, ch => `%${ch.charCodeAt().toString(16).slice(-2).toUpperCase()}`); // eslint-disable-line max-len, newline-per-chained-call
-}
-
-/**
- * 将请求对象换成字符串
- * @param  {Object} obj 请求对象
- * @return {String} 请求字符串
- */
-function encodeObj(obj) {
-  if (!obj) {
-    return '';
-  }
-
-  const params = [];
-
-  Object.keys(obj).forEach((key) => {
-    const value = obj[key];
-
-    if (value !== null && value !== undefined) {
-      params.push(`${encode(key)}=${encode(value)}`);
-    }
-  });
-
-  return params.join('&').replace(/%20/g, '+');
-}
-
-/**
- * 将请求对象换成 "x-www-form-urlencoded" 类型字符串
- * @param  {Object} obj 请求对象
- * @return {String} 请求字符串
- */
-function encodeForm(obj) {
-  function append(newObj, key, value) {
-    if (Array.isArray(value) || (typeof value === 'object' && value !== null)) {
-      Object.keys(value).forEach((k) => {
-        append(newObj, `${key}[${k}]`, value[k]);
-      });
-      return newObj;
-    }
-
-    newObj[key] = value;
-    return newObj;
-  }
-
-  return encodeObj(Object.keys(obj).reduce(
-    (newObj, key) => append(newObj, key, obj[key]), {}
-  ));
-}
-
-function handleStatus(status, response) {
-  const handler = statusHandlers[status] || statusHandlers.default;
-
-  if (typeof handler === 'function') {
-    handler(response);
-  }
-}
-
-/**
  * 检查请求的返回状态码
  * @param  {Object} response 服务器响应结果
  * @return {Object} 正常的响应结果
@@ -125,7 +119,9 @@ function checkStatus(response) {
     return response;
   }
 
-  handleStatus(status, response);
+  if (typeof statusHandler === 'function') {
+    statusHandler(status, response);
+  }
 
   throw new Error(response.statusText);
 }
@@ -136,8 +132,10 @@ function checkStatus(response) {
  * @return {[type]} JSON数据
  */
 function parseJSON(response) {
-  return response.json().then(d => d, (ex) => { // 转换JSON失败
-    handleStatus(500, response);
+  return response.json().then(null, (ex) => { // 转换JSON失败
+    if (typeof statusHandler === 'function') {
+      statusHandler(500, response);
+    }
     return Promise.reject(ex);
   });
 }
@@ -148,11 +146,9 @@ function parseJSON(response) {
  * @return {Object} 正常的数据 或者 失败的Promise
  */
 function successCallback(result) {
-  if (resultChecker(result)) {
+  if (typeof resultHandler !== 'function' || resultHandler(result)) {
     return result;
   }
-
-  handleStatus(result.code, result);
 
   return Promise.reject(result);
 }
@@ -167,7 +163,17 @@ function errorCallback(ex) {
 }
 
 /**
- * 添加请求头
+ * 设置服务器地址
+ * @param {String} url 服务器地址
+ */
+export function setServerUrl(url) {
+  if (typeof url === 'string') {
+    serverUrl = url;
+  }
+}
+
+/**
+ * 添加全局请求头
  * @param  {String} name  请求头名称
  * @param  {String} value 请求头内容
  */
@@ -178,14 +184,14 @@ export function appendHeaders(name, value) {
 }
 
 /**
- * 移除请求头
+ * 移除全局请求头
  * @param  {String} name 请求头名称
  */
 export function removeHeaders(name) {
   delete headers[name];
 }
 /**
- * 添加请求数据
+ * 添加全局请求数据
  * @param  {String} name  请求数据名称
  * @param  {String} value 请求数据内容
  */
@@ -196,7 +202,7 @@ export function appendAjaxData(name, value) {
 }
 
 /**
- * 移除请求数据
+ * 移除全局请求数据
  * @param  {String} name 请求数据名称
  */
 export function removeAjaxData(name) {
@@ -204,37 +210,22 @@ export function removeAjaxData(name) {
 }
 
 /**
- * 添加异常响应状态解析方法
- * @param  {Number|Array}   status  状态码
- * @param  {Function}     handler 解析方法
+ * 设置状态处理方法
+ * @param  {Function} handler 处理方法
  */
-export function appendStatusHandler(status, handler) {
-  if (typeof status === 'function') {
-    statusHandlers.default = status;
-  } else if (Array.isArray(status)) {
-    status.forEach((s) => (statusHandlers[s] = handler));
-  } else if (status) {
-    statusHandlers[status] = handler;
+export function setStatusHandler(handler) {
+  if (typeof handler === 'function') {
+    statusHandler = handler;
   }
 }
 
 /**
- * 移除异常响应状态解析方法
- * @param  {Number|Array} status 状态码
+ * 设置结果处理方法
+ * @param  {Function} handler 处理方法，返回 true 则表示正常结果
  */
-export function removeStatusHandler(status) {
-  if (!status) {
-    delete statusHandlers.default;
-  } else if (Array.isArray(status)) {
-    status.forEach((s) => (delete statusHandlers[s]));
-  } else {
-    delete statusHandlers[status];
-  }
-}
-
-export function replaceResultChecker(checker) {
-  if (typeof checker === 'function') {
-    resultChecker = checker;
+export function setResultHandler(handler) {
+  if (typeof handler === 'function') {
+    resultHandler = handler;
   }
 }
 
@@ -369,3 +360,4 @@ export function postJSON(url, json) {
     .then(successCallback)
     .catch(errorCallback);
 }
+－
