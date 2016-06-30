@@ -108,10 +108,6 @@
         const formatter = this.formatter;
         const min = this.min || moment().startOf('day').format(formatter);
 
-        if (min.indexOf(' ') > -1) { // min 已经带日期了
-          return moment(`${min}`, `${dateFormatter} ${formatter}`);
-        }
-
         return moment(`${date} ${min}`, `${dateFormatter} ${formatter}`);
       },
 
@@ -124,10 +120,6 @@
 
         const formatter = this.formatter;
         const max = this.max || moment().endOf('day').format(formatter);
-
-        if (max.indexOf(' ') > -1) { // min 已经带日期了
-          return moment(`${max}`, `${dateFormatter} ${formatter}`);
-        }
 
         return moment(`${date} ${max}`, `${dateFormatter} ${formatter}`);
       },
@@ -405,16 +397,16 @@
         cursor: pointer;
         float: left;
 
+        &:hover {
+          background-color: #f0f0f2;
+        }
+
         &.disabled {
           color: #ccd0d7;
           pointer-events: none;
         }
 
-        &:hover {
-          background-color: #f0f0f2;
-        }
-
-        &.selected {
+        &:not(.disabled).selected {
           background-color: $primary;
           color: #fff;
         }

@@ -2,14 +2,14 @@
   <div class="v-datetime-picker" :class="computedClasses">
     <v-date-picker placeholder="日期"
       :value="date"
-      :min="min"
-      :max="max"
+      :min="minDate"
+      :max="maxDate"
       @change="onDateChange"></v-date-picker>
     <v-time-picker placeholder="时间"
       :date="date"
       :value="time"
-      :min="min"
-      :max="max"
+      :min="minTime"
+      :max="maxTime"
       :disabled="!date"
       @change="onTimeChange"></v-date-picker>
   </div>
@@ -29,17 +29,37 @@
 
     props: {
       value: String,
-      min: String,
-      max: String,
+      min: [String, Object],
+      max: [String, Object],
       disabled: Boolean,
     },
 
     computed: {
       date() {
-        return this.value ? this.value.split(' ')[0] : '';
+        return this.value ? this.value.split(' ')[0] : undefined;
       },
       time() {
-        return this.value ? this.value.split(' ')[1] : '';
+        return this.value ? this.value.split(' ')[1] : undefined;
+      },
+      minDate() {
+        return this.min ? this.min.split(' ')[0] : undefined;
+      },
+      maxDate() {
+        return this.max ? this.max.split(' ')[0] : undefined;
+      },
+      minTime() {
+        if (this.min && this.date === this.minDate) {
+          return this.min.split(' ')[1];
+        }
+
+        return undefined;
+      },
+      maxTime() {
+        if (this.max && this.date === this.maxDate) {
+          return this.max.split(' ')[1];
+        }
+
+        return undefined;
       },
       computedClasses() {
         return {

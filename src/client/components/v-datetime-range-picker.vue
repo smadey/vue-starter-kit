@@ -25,8 +25,8 @@
     props: {
       start: String,
       end: String,
-      min: String,
-      max: String,
+      min: [String, Object],
+      max: [String, Object],
       disabled: Boolean,
     },
 

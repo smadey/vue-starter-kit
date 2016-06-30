@@ -61,8 +61,14 @@
 
     props: {
       value: String,
-      min: String,
-      max: String,
+      min: {
+        type: [String, Object],
+        default: () => ({ year: -1 }),
+      },
+      max: {
+        type: [String, Object],
+        default: () => ({ year: 1 }),
+      },
       yFormatter: {
         type: String,
         default: 'YYYY',
@@ -113,16 +119,50 @@
        * @return {Moment} 最小日期
        */
       mMinDate() {
-        return this.min ?
-          moment(this.min, this.formatter) :
-          moment().startOf('day').add(-5, 'year');
+        const min = this.min;
+
+        if (!min) {
+          return moment().startOf('day');
+        }
+
+        if (typeof min === 'object') {
+          const minDate = moment();
+
+          Object.keys(min).forEach((key) => {
+            if (min[key]) {
+              minDate.add(min[key], key);
+            }
+          });
+
+          return minDate.startOf('day');
+        }
+
+        return moment(this.min, this.formatter);
       },
 
       /**
        * @return {Moment} 最大日期
        */
       mMaxDate() {
-        return this.max ? moment(this.max, this.formatter) : moment().startOf('day');
+        const max = this.max;
+
+        if (!max) {
+          return moment().startOf('day');
+        }
+
+        if (typeof max === 'object') {
+          const maxDate = moment();
+
+          Object.keys(max).forEach((key) => {
+            if (max[key]) {
+              maxDate.add(max[key], key);
+            }
+          });
+
+          return maxDate.startOf('day');
+        }
+
+        return moment(this.max, this.formatter);
       },
 
       /**
@@ -292,7 +332,7 @@
             start = this.dates[0].moment;
         }
 
-        return minDate.isAfter(start);
+        return !minDate.isBefore(start);
       },
 
       /**
@@ -316,7 +356,7 @@
             end = this.dates[this.dates.length - 1].moment;
         }
 
-        return maxDate.isBefore(end);
+        return !maxDate.isAfter(end);
       },
     },
 
@@ -508,16 +548,16 @@
       span {
         cursor: pointer;
 
+        &:hover {
+          background-color: #f0f0f2;
+        }
+
         &.disabled {
           color: #ccd0d7;
           pointer-events: none;
         }
 
-        &:hover {
-          background-color: #f0f0f2;
-        }
-
-        &.selected {
+        &:not(.disabled).selected {
           background-color: $primary;
           color: #fff;
         }

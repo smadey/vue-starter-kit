@@ -17,7 +17,7 @@
       </p>
     </div>
 
-    <div class="v-select-options" v-show="active" :style="computedOptionsStyle">
+    <div class="v-select-options" v-show="active">
       <ul>
         <li v-for="option in options"
           :class="{selected: option[optionValueKey] == computedValue}"
@@ -53,11 +53,6 @@
     data() {
       return {
         active: false,
-        error: false,
-        errors: {
-          required: false,
-          pattern: false,
-        },
       };
     },
     computed: {
@@ -186,7 +181,6 @@
       li {
         color: #808080;
         cursor: pointer;
-        display: block;
         height: 30px;
         line-height: 30px;
         padding: 0 12px;

@@ -1,7 +1,8 @@
 <template>
   <div class="v-input" :class="computedClasses">
     <slot>
-      <input v-if="rows === 1" :type="type" v-model="value" :placeholder="placeholder"
+      <input v-el:input v-if="rows === 1" :type="type" v-model="value"
+        :placeholder="placeholder"
         :maxlength="maxlength" @focus="onFocus" @blur="onBlur" @input="onChange" />
       <textarea v-else :rows="rows" v-model="value" :placeholder="placeholder"
         :maxlength="maxlength" @focus="onFocus" @blur="onBlur" @input="onChange"
@@ -32,8 +33,7 @@
   export default {
     mixins: [idMixin, validatorMixin],
     props: {
-      value: {
-      },
+      value: {},
       type: {
         type: String,
         default: 'text',
@@ -44,15 +44,6 @@
         type: Number,
         default: 1,
       },
-    },
-    data() {
-      return {
-        error: false,
-        errors: {
-          required: false,
-          pattern: false,
-        },
-      };
     },
     computed: {
       computedClasses() {
@@ -65,6 +56,9 @@
       },
     },
     methods: {
+      focus() {
+        this.$els.input.focus();
+      },
       onFocus() {
         this.focused = true;
         this.$emit('focus');
