@@ -101,7 +101,7 @@
     },
     methods: {
       toggle() {
-        if (!this.options.length) {
+        if (!this.options || !this.options.length) {
           return;
         }
 

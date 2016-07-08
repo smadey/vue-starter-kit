@@ -14,7 +14,7 @@ function getChildren(component) {
 
 export default {
   methods: {
-    $getAllChildren() {
+    getAllChildren() {
       return getChildren(this);
     },
   },

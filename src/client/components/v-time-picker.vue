@@ -330,7 +330,7 @@
       border-radius: 3px;
       border-top: 1px solid #eee;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      overflow: auto;
+      overflow-y: auto;
       padding: 5px;
       position: absolute;
       transition: opacity 0.218s;

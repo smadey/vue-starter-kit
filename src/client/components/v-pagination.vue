@@ -143,37 +143,48 @@
     text-align: right;
 
     ul {
-      background-color: #fff;
       display: inline-block;
-      padding-left: 1px;
+      vertical-align: middle;
     }
 
     li {
-      border: 1px solid #f2f2f2;
+      background-color: #fff;
       float: left;
-      margin-left: -1px;
+
+      & + li {
+        margin-left: 8px;
+      }
 
       a, span {
         display: block;
         font-size: 14px;
-        line-height: 20px;
-        padding: 4px 16px;
+        height: 32px;
+        line-height: 32px;
+        min-width: 32px;
+        padding: 0 10px;
+        text-align: center;
       }
 
       a {
-        color: #427fed;
+        color: #262626;
       }
 
       span {
-        color: #666;
+        color: #444;
+      }
+
+      &:hover a {
+        background-color: #ededed;
       }
 
       &.current a {
+        background-color: #317cd3;
         cursor: default;
-        color: #666;
+        color: #fff;
       }
 
       &.disabled a {
+        background-color: #fff;
         cursor: default;
         color: #ccc;
       }
