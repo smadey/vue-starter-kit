@@ -86,6 +86,9 @@
 </script>
 
 <style lang="sass">
+  @import "./sass/variable.scss";
+  @import "./sass/mixins.scss";
+
   .v-dropdown {
     position: relative;
 
@@ -144,8 +147,7 @@
     }
 
     &.is-disabled {
-      opacity: .65;
-      pointer-events: none;
+      @extend %disabled;
     }
   }
 </style>

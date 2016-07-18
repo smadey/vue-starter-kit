@@ -139,6 +139,9 @@
 </script>
 
 <style lang="sass">
+  @import "./sass/variable.scss";
+  @import "./sass/mixins.scss";
+
   .v-pagination {
     text-align: right;
 
@@ -178,7 +181,7 @@
       }
 
       &.current a {
-        background-color: #317cd3;
+        background-color: $primary;
         cursor: default;
         color: #fff;
       }

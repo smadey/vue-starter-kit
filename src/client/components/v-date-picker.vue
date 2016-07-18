@@ -444,9 +444,10 @@
 </script>
 
 <style lang="sass">
-  .v-date-picker {
-    $primary: #2972cc;
+  @import "./sass/variable.scss";
+  @import "./sass/mixins.scss";
 
+  .v-date-picker {
     display: inline-block;
     vertical-align: middle;
     position: relative;
@@ -459,7 +460,6 @@
       height: 30px;
       line-height: 20px;
       padding: 4px 6px;
-      vertical-align: middle;
       width: 100%;
 
       &:focus {
@@ -503,7 +503,7 @@
 
       &.disabled {
         color: #ccd0d7;
-        pointer-events: none;
+        @extend %disabled;
       }
 
       &:hover i {
@@ -554,7 +554,7 @@
 
         &.disabled {
           color: #ccd0d7;
-          pointer-events: none;
+          @extend %disabled;
         }
 
         &:not(.disabled).selected {
@@ -583,8 +583,7 @@
     }
 
     &.is-disabled {
-      opacity: .65;
-      pointer-events: none;
+      @extend %disabled;
     }
 
     &.is-invalid {

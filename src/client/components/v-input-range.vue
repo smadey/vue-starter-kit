@@ -7,21 +7,14 @@
 </template>
 
 <script>
-  import idMixin from './mixins/id';
-
   export default {
-    mixins: [idMixin],
     props: {
       type: {
         type: String,
         default: 'number',
       },
-      from: {
-      },
-      to: {
-      },
-    },
-    methods: {
+      from: {},
+      to: {},
     },
   };
 </script>
@@ -39,7 +32,6 @@
       height: 30px;
       line-height: 20px;
       padding: 4px 6px;
-      vertical-align: middle;
       width: 95px;
 
       &:focus {

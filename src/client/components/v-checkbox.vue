@@ -1,25 +1,22 @@
 <template>
-  <label :for="id" class="v-checkbox" :class="{disabled: disabled}">
-    <input type="checkbox" :id="id" :name="name" :value="checkboxValue" v-model="value">
+  <label :for="vid" class="v-checkbox" :class="{ 'is-disabled': disabled }">
+    <input type="checkbox" :id="vid" :name="name" :value="checkboxValue" v-model="value">
     <i></i>
     <slot></slot>
   </label>
 </template>
 
 <script>
-  import idMixin from './mixins/id';
+  import vidMixin from './mixins/vid';
 
   export default {
-    mixins: [idMixin],
+    mixins: [vidMixin],
     props: {
       value: {
         require: true,
       },
-      checkboxValue: {
-      },
-      name: {
-        type: String,
-      },
+      checkboxValue: {},
+      name: String,
       disabled: {
         type: Boolean,
         default: false,
@@ -29,6 +26,9 @@
 </script>
 
 <style lang="sass">
+  @import "./sass/variable.scss";
+  @import "./sass/mixins.scss";
+
   .v-checkbox {
     cursor: pointer;
     display: inline-block;
@@ -36,7 +36,6 @@
 
     input {
       clip: rect(0, 0, 0, 0);
-      margin: 1px 0 0 3px;
       position: absolute;
 
       &:checked + i {
@@ -47,24 +46,26 @@
     i {
       background: #fff url('./img/inputs.png') 0 0 / 160px 16px no-repeat;
       display: inline-block;
-      height: 16px;
-      position: relative;
-      top: -1px;
+      height: 15px;
+      margin-top: -2px;
       vertical-align: middle;
-      width: 16px;
+      width: 15px;
     }
 
     &:hover i {
       background-position: -16px 0;
     }
 
-    &.disabled i {
-      background-position: -48px 0;
-      cursor: default;
-    }
+    &.is-disabled {
+      @extend %disabled;
 
-    &.disabled input:checked + i {
-      background-position: -64px 0;
+      i {
+        background-position: -48px 0;
+      }
+
+      input:checked + i {
+        background-position: -64px 0;
+      }
     }
   }
 </style>

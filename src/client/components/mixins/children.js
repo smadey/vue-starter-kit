@@ -11,7 +11,6 @@ function getChildren(component) {
   return children;
 }
 
-
 export default {
   methods: {
     getAllChildren() {

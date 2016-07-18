@@ -87,6 +87,9 @@
 </script>
 
 <style lang="sass">
+  @import "./sass/variable.scss";
+  @import "./sass/mixins.scss";
+
   .v-datetime-picker {
     display: inline-block;
     min-width: 160px;
@@ -103,8 +106,7 @@
       width: 55px;
     }
     &.is-disabled {
-      opacity: .65;
-      pointer-events: none;
+      @extend %disabled;
     }
   }
 </style>

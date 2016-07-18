@@ -1,18 +1,19 @@
 <template>
-  <label :for="id" class="v-radio" :class="computedClasses">
-    <input type="radio" :id="id" :name="name" :value="radioValue" v-model="value">
+  <label :for="vid" class="v-radio" :class="computedClasses">
+    <input type="radio" :id="vid" :name="computedName" :value="radioValue" v-model="value">
     <i></i>
     <slot></slot>
   </label>
 </template>
 
 <script>
-  import idMixin from './mixins/id';
+  import vidMixin from './mixins/vid';
 
   export default {
-    mixins: [idMixin],
+    mixins: [vidMixin],
     props: {
       value: {},
+      name: String,
       radioValue: {
         require: true,
       },
@@ -22,8 +23,8 @@
       },
     },
     computed: {
-      name() {
-        return this.$parent.name;
+      computedName() {
+        return this.name || this.$parent.name;
       },
       computedClasses() {
         const classes = {
@@ -37,14 +38,16 @@
 </script>
 
 <style lang="sass">
+  @import "./sass/variable.scss";
+  @import "./sass/mixins.scss";
+
   .v-radio {
     cursor: pointer;
     display: inline-block;
     vertical-align: middle;
 
     &-disabled {
-      opacity: .65;
-      pointer-events: none;
+      @extend %disabled;
     }
 
     & + & {
@@ -64,11 +67,10 @@
     i {
       background: url('./img/inputs.png') -80px 0 / 160px 16px no-repeat;
       display: inline-block;
-      height: 16px;
-      position: relative;
-      top: -1px;
+      height: 15px;
+      margin-top: -1px;
       vertical-align: middle;
-      width: 16px;
+      width: 15px;
     }
 
     &:hover i {

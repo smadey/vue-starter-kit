@@ -44,7 +44,8 @@
 </script>
 
 <style lang="sass">
-  $v-spinner-color: #fff;
+  @import "./sass/variable.scss";
+  @import "./sass/mixins.scss";
 
   .v-spinner {
     height: 50px;
@@ -67,7 +68,7 @@
 
         &:before {
           animation: $duration infinite ease-in-out both;
-          background-color: $v-spinner-color;
+          background-color: $spinner-color;
           border-radius: 100%;
           content: '';
           display: block;
@@ -112,7 +113,7 @@
 
       .v-spinner-child {
         animation: v-spinner-waves $duration infinite ease-in-out;
-        background-color: $v-spinner-color;
+        background-color: $spinner-color;
         display: inline-block;
         height: 100%;
         width: 10%;

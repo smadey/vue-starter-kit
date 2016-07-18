@@ -1,16 +1,6 @@
 <template>
   <div class="v-validator">
-    <div class="v-validator-errors" v-if="!valid">
-      <p v-if="invalids.required">
-        <slot name="required">{{requiredTip}}</slot>
-      </p>
-      <p v-if="invalids.pattern">
-        <slot name="pattern">{{patternTip}}</slot>
-      </p>
-      <p v-if="invalids.extra">
-        <slot name="extra">{{extraTip}}</slot>
-      </p>
-    </div>
+    <partial name="errors"></partial>
   </div>
 </template>
 
@@ -26,10 +16,12 @@
 </script>
 
 <style lang="sass">
+  @import "./sass/variable.scss";
+  @import "./sass/mixins.scss";
+
   .v-validator {
     &-errors {
-      color: #ed4259;
-      margin-top: 3px;
+      @extend %validator-errors;
     }
   }
 </style>

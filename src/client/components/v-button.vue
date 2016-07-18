@@ -5,10 +5,7 @@
 </template>
 
 <script>
-  import idMixin from './mixins/id';
-
   export default {
-    mixins: [idMixin],
     props: {
       type: {
         type: String,
@@ -46,6 +43,9 @@
 </script>
 
 <style lang="sass">
+  @import "./sass/variable.scss";
+  @import "./sass/mixins.scss";
+
   .v-button {
     background-image: none;
     border-radius: 3px;
@@ -75,10 +75,7 @@
     }
 
     &.disabled {
-      box-shadow: none;
-      cursor: not-allowed;
-      opacity: 0.65;
-      pointer-events: none;
+      @extend %disabled;
     }
 
     &-large {
@@ -89,45 +86,27 @@
     }
 
     &, &-default {
-      background-color: #fff;
-      border-color: #d1d2d4;
-      color: #4a4a4a;
-
-      // &:hover {
-      //   background-color: #e6e6e6;
-      //   border-color: #b1b3b6;
-      //   color: #4a4a4a;
-      // }
+      background-color: $btn-default-bg;
+      border-color: $btn-default-border;
+      color: $btn-default-color;
     }
 
     &-primary {
-      background-color: #2972cc;
-      border-color: #2566b7;
-      color: #fff;
-
-      // &:hover {
-      //   background-color: #205aa2;
-      //   border-color: #1a4a84;
-      //   color: #fff;
-      // }
+      background-color: $btn-primary-bg;
+      border-color: $btn-primary-border;
+      color: $btn-primary-color;
     }
 
     &-danger {
-      background-color: #ed4259;
-      border-color: #eb2b45;
-      color: #fff;
-
-      // &:hover {
-      //   background-color: #e61632;
-      //   border-color: #c5132b;
-      //   color: #fff;
-      // }
+      background-color: $btn-danger-bg;
+      border-color: $btn-danger-border;
+      color: $btn-danger-color;
     }
 
     &-link {
-      background-color: transparent;
-      border-color: transparent;
-      color: #2972cc;
+      background-color: $btn-link-bg;
+      border-color: $btn-link-border;
+      color: $btn-link-color;
     }
   }
 </style>

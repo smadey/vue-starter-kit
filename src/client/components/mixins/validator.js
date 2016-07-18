@@ -1,4 +1,28 @@
+import { util } from 'vue';
+
+import vnameMixin from './vname.js';
+
 export default {
+  mixins: [vnameMixin],
+
+  partials: {
+    errors: `
+<div :class="vname + '-errors'" v-if="!valid">
+  <p v-if="invalids.required">
+    <slot name="required">{{requiredTip}}</slot>
+  </p>
+  <p v-if="invalids.maxlength">
+    <slot name="maxlength">{{maxlengthTip}}</slot>
+  </p>
+  <p v-if="invalids.pattern">
+    <slot name="pattern">{{patternTip}}</slot>
+  </p>
+  <p v-if="invalids.extra">
+    <slot name="extra">{{extraTip}}</slot>
+  </p>
+</div>
+    `,
+  },
   props: {
     autoValidate: Boolean,
     validateOnInit: Boolean,
@@ -7,24 +31,26 @@ export default {
       type: String,
       default: '该字段不能为空',
     },
+    maxlength: Number,
+    maxlengthTip: {
+      type: String,
+      default: '该字段长度过长',
+    },
     pattern: String,
     patternTip: {
       type: String,
       default: '该字段不合法',
     },
     extraTip: String,
-    maxlength: Number,
   },
   data() {
     return {
-      initialModelValue: undefined,
-      dirty: false,
       valid: true,
       invalids: {
         required: false,
+        maxlength: false,
         pattern: false,
         extra: false,
-        maxlength: false,
       },
     };
   },
@@ -33,9 +59,6 @@ export default {
     modelValue() {
       return this.value;
     },
-    dirty() {
-      return this.initialModelValue !== this.modelValue;
-    },
   },
   watch: {
     extraTip() {
@@ -43,30 +66,28 @@ export default {
     },
   },
   ready() {
-    this.initialModelValue = this.modelValue;
-
     if (this.validateOnInit) {
       this.validate();
     }
 
     if (this.autoValidate) {
-      this.$watch('modelValue', () => this.validate());
+      this.$watch('modelValue', util.debounce(() => this.validate(), 300));
     }
   },
   methods: {
     resetValid() {
       this.valid = true;
       this.invalids.required = false;
+      this.invalids.maxlength = false;
       this.invalids.pattern = false;
       this.invalids.extra = false;
-      this.invalids.maxlength = false;
     },
     validate() {
       this.valid = true;
       this.validateRequired();
+      this.validateMaxlength();
       this.validatePattern();
       this.validateExtra();
-      this.validateMaxlength();
     },
     validateRequired() {
       if (!this.valid) {
@@ -78,6 +99,18 @@ export default {
         this.valid = false;
       } else {
         this.invalids.required = false;
+      }
+    },
+    validateMaxlength() {
+      if (!this.valid) {
+        return;
+      }
+
+      if (this.maxlength > 0 && this.modelValue.length > this.maxlength) {
+        this.invalids.maxlength = true;
+        this.valid = false;
+      } else {
+        this.invalids.maxlength = false;
       }
     },
     validatePattern() {
@@ -102,18 +135,6 @@ export default {
         this.valid = false;
       } else {
         this.invalids.extra = false;
-      }
-    },
-    validateMaxlength() {
-      if (!this.valid) {
-        return;
-      }
-
-      if (this.maxlength > 0 && this.modelValue.length > this.maxlength) {
-        this.invalids.maxlength = true;
-        this.valid = false;
-      } else {
-        this.invalids.maxlength = false;
       }
     },
   },

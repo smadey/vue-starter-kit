@@ -58,6 +58,9 @@
 </script>
 
 <style lang="sass">
+  @import "./sass/variable.scss";
+  @import "./sass/mixins.scss";
+
   .v-tip {
     background-color: rgba(0, 0, 0, .2);
 
@@ -71,16 +74,15 @@
       max-width: 240px;
       padding: 10px 20px;
       outline: none;
-      vertical-align: middle;
 
       &-success {
-        background: #5CB85C;
-        border: 1px solid #5CB85C;
+        background: $success;
+        border: 1px solid $success;
       }
 
       &-error {
-        background: #ed4259;
-        border: 1px solid #ed4259;
+        background: $danger;
+        border: 1px solid $danger;
       }
     }
   }

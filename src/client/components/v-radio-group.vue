@@ -18,8 +18,6 @@
 <style lang="sass">
   .v-radio-group {
     display: inline-block;
-    height: 30px;
-    line-height: 30px;
     vertical-align: middle;
   }
 </style>

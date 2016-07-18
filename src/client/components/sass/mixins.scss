@@ -1,0 +1,34 @@
+@import "./variable.scss";
+
+%clearfix {
+  *zoom: 1;
+
+  &:after, &:before {
+    display: table;
+    content: ' ';
+  }
+
+  &:after {
+    clear: both;
+  }
+}
+
+%toe {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
+}
+
+%disabled {
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+%validator-errors {
+  color: $danger;
+
+  p {
+    margin-top: 3px;
+  }
+}

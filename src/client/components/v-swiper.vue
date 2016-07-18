@@ -11,6 +11,7 @@
 
   export default {
     props: ['direction', 'initialSlide', 'runCallbacksOnInit'],
+
     ready() {
       new Swiper(this.$el, {
         initialSlide: this.initialSlide,

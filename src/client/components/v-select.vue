@@ -5,17 +5,7 @@
       <i class="v-select-caret"></i>
     </div>
 
-    <div class="v-select-errors" v-if="!valid">
-      <p v-if="invalids.required">
-        <slot name="required">{{requiredTip}}</slot>
-      </p>
-      <p v-if="invalids.pattern">
-        <slot name="pattern">{{patternTip}}</slot>
-      </p>
-      <p v-if="invalids.extra">
-        <slot name="extra">{{extraTip}}</slot>
-      </p>
-    </div>
+    <partial name="errors"></partial>
 
     <div class="v-select-options" v-show="active">
       <ul>
@@ -59,7 +49,6 @@
       computedClasses() {
         return {
           'is-disabled': this.disabled,
-          'is-dirty': this.dirty,
           'is-invalid': !this.valid,
         };
       },
@@ -132,6 +121,9 @@
 </script>
 
 <style lang="sass">
+  @import "./sass/variable.scss";
+  @import "./sass/mixins.scss";
+
   .v-select {
     display: inline-block;
     position: relative;
@@ -172,7 +164,7 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       max-height: 300px;
       min-width: 200px;
-      overflow: auto;
+      overflow-y: auto;
       position: absolute;
       transition: opacity 0.218s;
       width: 100%;
@@ -195,21 +187,16 @@
     }
 
     &-errors {
-      color: #ed4259;
-
-      p {
-        margin-top: 3px;
-      }
+      @extend %validator-errors;
     }
 
     &.is-disabled {
-      opacity: .65;
-      pointer-events: none;
+      @extend %disabled;
     }
 
     &.is-invalid {
       .v-select-selected {
-        border-color: #ed4259;
+        border-color: $danger;
       }
     }
   }

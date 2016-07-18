@@ -1,37 +1,30 @@
 <template>
   <div class="v-input" :class="computedClasses">
-    <slot>
-      <input v-el:input v-if="rows === 1" :type="type" v-model="value"
-        :placeholder="placeholder"
-        :maxlength="maxlength" @focus="onFocus" @blur="onBlur" @input="onChange" />
-      <textarea v-else :rows="rows" v-model="value" :placeholder="placeholder"
-        :maxlength="maxlength" @focus="onFocus" @blur="onBlur" @input="onChange"
-        ></textarea>
-    </slot>
+    <input v-el:input v-if="rows === 1" :type="type" v-model="value"
+      :placeholder="placeholder"
+      :maxlength="maxlength" @focus="onFocus" @blur="onBlur" @input="onChange" />
+    <textarea v-else :rows="rows" v-model="value" :placeholder="placeholder"
+      :maxlength="maxlength" @focus="onFocus" @blur="onBlur" @input="onChange"
+      ></textarea>
+
     <span class="v-input-counter" v-if="maxlength > 0">
       {{value ? value.length : 0 }}/{{maxlength}}
     </span>
 
-    <div class="v-input-errors" v-if="!valid">
-      <p v-if="invalids.required">
-        <slot name="required">{{requiredTip}}</slot>
-      </p>
-      <p v-if="invalids.pattern">
-        <slot name="pattern">{{patternTip}}</slot>
-      </p>
-      <p v-if="invalids.extra">
-        <slot name="extra">{{extraTip}}</slot>
-      </p>
-    </div>
+    <partial name="errors"></partial>
   </div>
 </template>
 
 <script>
-  import idMixin from './mixins/id';
   import validatorMixin from './mixins/validator';
 
+  import vValidator from './v-validator.vue';
+
   export default {
-    mixins: [idMixin, validatorMixin],
+    mixins: [validatorMixin],
+    components: {
+      vValidator,
+    },
     props: {
       value: {},
       type: {
@@ -49,7 +42,6 @@
       computedClasses() {
         return {
           'is-disabled': this.disabled,
-          'is-dirty': this.dirty,
           'is-invalid': !this.valid,
           'is-focused': this.focused,
         };
@@ -76,6 +68,9 @@
 </script>
 
 <style lang="sass">
+  @import "./sass/variable.scss";
+  @import "./sass/mixins.scss";
+
   .v-input {
     display: inline-block;
     vertical-align: middle;
@@ -90,17 +85,8 @@
       width: 100%;
 
       &:focus {
-        border-color: #2972cc;
+        border-color: $primary;
       }
-    }
-
-    input {
-      height: 30px;
-      vertical-align: middle;
-    }
-
-    textarea {
-      vertical-align: top;
     }
 
     &-counter {
@@ -114,22 +100,17 @@
     }
 
     &-errors {
-      color: #ed4259;
-
-      p {
-        margin-top: 3px;
-      }
+      @extend %validator-errors;
     }
 
     &.is-disabled {
-      opacity: .65;
-      pointer-events: none;
+      @extend %disabled;
     }
 
     &.is-invalid {
       input, textarea,
       input:focus, textarea:focus {
-        border-color: #ed4259;
+        border-color: $danger;
       }
     }
   }

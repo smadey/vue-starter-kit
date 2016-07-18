@@ -50,6 +50,9 @@
 </script>
 
 <style lang="sass">
+  @import "./sass/variable.scss";
+  @import "./sass/mixins.scss";
+
   .v-date-range-picker {
     display: inline-block;
     vertical-align: middle;
@@ -73,8 +76,7 @@
     }
 
     &.is-disabled {
-      opacity: .65;
-      pointer-events: none;
+      @extend %disabled;
     }
   }
 </style>
