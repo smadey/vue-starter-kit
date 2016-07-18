@@ -1,7 +1,7 @@
 /**
  * example:
  * <v-modal :show="modalShow" :mode="modalMode" :body="modalBody"
-     @resolve="resolveModal" @reject="rejectModal"></v-modal>
+ * @resolve="resolveModal" @reject="rejectModal"></v-modal>
  */
 
 import vModal from '../v-modal.vue';
