@@ -1,34 +1,32 @@
 <template>
   <div class="v-auto-complete" :class="computedClasses">
-    <v-input :value.sync="value"
-      :placeholder="placeholder"
-      :disabled="disabled"
-      @focus="show"></v-input>
+    <v-dropdown :active.sync="showItems">
+      <v-input :value.sync="value" :placeholder="placeholder"></v-input>
 
-    <partial name="errors"></partial>
-
-    <div class="v-auto-complete-items" v-show="active">
-      <ul>
+      <ul slot="menu">
         <li v-for="item in items"
-          :class="{selected: item == value}"
+          :class="{ selected: item == value }"
           @click="select(item)">
           {{item}}
         </li>
       </ul>
-    </div>
+    </v-dropdown>
+
+    <partial name="errors"></partial>
   </div>
 </template>
 
 <script>
-  import boundMixin from './mixins/bound';
   import validatorMixin from './mixins/validator';
 
+  import vDropdown from './v-dropdown.vue';
   import vInput from './v-input.vue';
 
   export default {
-    mixins: [boundMixin, validatorMixin],
+    mixins: [validatorMixin],
 
     components: {
+      vDropdown,
       vInput,
     },
 
@@ -40,7 +38,7 @@
     },
     data() {
       return {
-        active: false,
+        showItems: false,
       };
     },
     computed: {
@@ -54,20 +52,18 @@
       //   return this.items.filter(d => (!this.value || d.indexOf(this.value) > -1));
       // },
     },
+    watch: {
+      showItems(val, oldVal) {
+        if (oldVal && !val) {
+          this.validate();
+        }
+      },
+    },
     methods: {
-      show() {
-        this.active = true;
-        this.enableCheckBound(() => this.hide());
-      },
-      hide() {
-        this.active = false;
-        this.disableCheckBound();
-      },
       select(item) {
-        this.hide();
+        this.showItems = false;
         this.value = item;
 
-        this.validate();
         this.$emit('change', this.value);
       },
     },
@@ -80,21 +76,12 @@
 
   .v-auto-complete {
     display: inline-block;
-    position: relative;
     vertical-align: middle;
 
-    &-items {
-      background-color: #fff;
+    .v-dropdown-menu {
       border-radius: 3px;
       border-top: 1px solid #eee;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      max-height: 300px;
-      min-width: 200px;
-      overflow-y: auto;
-      position: absolute;
-      transition: opacity 0.218s;
       width: 100%;
-      z-index: 200;
 
       li {
         color: #808080;
