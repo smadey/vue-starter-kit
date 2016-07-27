@@ -33,4 +33,9 @@
     height: 100%;
   }
 
+  .v-count-board {
+    margin: 20% auto;
+    width: 200px;
+  }
+
 </style>

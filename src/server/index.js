@@ -55,9 +55,7 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(require('webpack-dev-middleware')(compiler, {
     publicPath: webpackConfig.output.publicPath,
     noInfo: true,
-    stats: {
-      colors: true
-    }
+    stats: 'errors-only',
   }));
 
   app.use(webpackHotMiddleware(compiler));
