@@ -34,6 +34,16 @@ module.exports = {
     publicPath: config.publicPath,
     filename: filename + '.js',
   },
+  resolve: {
+    alias: {
+      'TweenMax': path.resolve('node_modules/gsap/src/uncompressed/TweenMax.js'),
+      'TweenLite': path.resolve('node_modules/gsap/src/uncompressed/TweenLite.js'),
+      'TimelineMax': path.resolve('node_modules/gsap/src/uncompressed/TimelineMax.js'),
+      'ScrollMagic': path.resolve('node_modules/scrollmagic/scrollmagic/uncompressed/ScrollMagic.js'),
+      'ScrollMagic-gsap': path.resolve('node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js'),
+      'ScrollMagic-debug': path.resolve('node_modules/scrollmagic/scrollmagic/uncompressed/plugins/debug.addIndicators.js'),
+    },
+  },
   resolveLoader: {
     root: path.resolve('node_modules'),
   },
