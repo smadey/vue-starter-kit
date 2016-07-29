@@ -3,6 +3,8 @@ $primary: #2972cc;
 
 $success: #5cb85c;
 
+$warning: #f35809;
+
 $danger: #ed4259;
 
 $btn-default-bg: #fff;
@@ -13,6 +15,10 @@ $btn-primary-bg: $primary;
 $btn-primary-border: #2566b7;
 $btn-primary-color: #fff;
 
+$btn-warning-bg: $warning;
+$btn-warning-border: #E55308;
+$btn-warning-color: #fff;
+
 $btn-danger-bg: $danger;
 $btn-danger-border: #eb2b45;
 $btn-danger-color: #fff;
@@ -21,4 +27,27 @@ $btn-link-bg: transparent;
 $btn-link-border: transparent;
 $btn-link-color: #2972cc;
 
+$pagination-font-size: 14px;
+$pagination-size: 32px;
+$pagination-gap: 8px;
+$pagination-bg: #fff;
+$pagination-color: #8d8d8d;
+$pagination-active-bg: $primary;
+$pagination-active-color: #fff;
+$pagination-disabled-color: #dbdbdb;
+
+$range-color: #cbcbcb;
+$range-items-height: 3px;
+$range-item-size: 9px;
+$range-item-clickable-size: 16px;
+$range-thumb-size: 12px;
+
 $spinner-color: #fff;
+
+$steps-height: 40px;
+$steps-arrow: 20px;
+$steps-gap: 4px;
+$steps-bg: #ccc;
+$steps-color: #444;
+$steps-active-bg: #2972cc;
+$steps-active-color: #fff;

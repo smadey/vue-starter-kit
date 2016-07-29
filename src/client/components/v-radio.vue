@@ -37,8 +37,6 @@
   .v-radio {
     cursor: pointer;
     display: inline-block;
-    height: 16px;
-    line-height: 1;
     vertical-align: middle;
 
     & + & {
@@ -66,7 +64,7 @@
       border-radius: 50%;
       display: inline-block;
       height: 16px;
-      margin-top: -1px;
+      margin-top: -2px;
       position: relative;
       transition: border-color .1s cubic-bezier(.71,-.46,.29,1.46),
         background-color .1s cubic-bezier(.71,-.46,.29,1.46);

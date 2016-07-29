@@ -1,9 +1,11 @@
 <template>
   <div class="v-pagination">
-    <ul>
+    <ul v-if="total">
       <!-- prev -->
       <li class="v-pagination-item prev" :class="{disabled: page < 2}">
-        <a href="javascript:;" @click="prev">{{prevText}}</a>
+        <a href="javascript:;" @click="prev">
+          <i class="fa fa-angle-left"></i>
+        </a>
       </li>
       <!-- first -->
       <li class="v-pagination-item first" v-if="showFirst">
@@ -29,7 +31,9 @@
       </li>
       <!-- next -->
       <li class="v-pagination-item" :class="{disabled: page > total - 1}">
-        <a href="javascript:;" @click="next">{{nextText}}</a>
+        <a href="javascript:;" @click="next">
+          <i class="fa fa-angle-right"></i>
+        </a>
       </li>
     </ul>
     <!-- <div class="v-pagination-jump">
@@ -58,14 +62,14 @@
         type: String,
         default: '...',
       },
-      prevText: {
-        type: String,
-        default: '<<',
-      },
-      nextText: {
-        type: String,
-        default: '>>',
-      },
+      // prevText: {
+      //   type: String,
+      //   default: '<<',
+      // },
+      // nextText: {
+      //   type: String,
+      //   default: '>>',
+      // },
     },
     computed: {
       pages() {
@@ -151,45 +155,50 @@
     }
 
     li {
-      background-color: #fff;
+      background-color: $pagination-bg;
       float: left;
 
       & + li {
-        margin-left: 8px;
+        margin-left: $pagination-gap;
       }
 
       a, span {
         display: block;
-        font-size: 14px;
-        height: 32px;
-        line-height: 32px;
-        min-width: 32px;
-        padding: 0 10px;
+        font-size: $pagination-font-size;
+        height: $pagination-size;
+        line-height: $pagination-size;
+        min-width: $pagination-size;
+        padding: 0 $pagination-size / 4;
         text-align: center;
       }
 
       a {
-        color: #262626;
+        color: $pagination-color;
       }
 
       span {
-        color: #444;
+        color: $pagination-color;
       }
 
-      &:hover a {
-        background-color: #ededed;
+      i {
+        font-size: $pagination-size * 0.9;
+        line-height: $pagination-size * 0.9;
+      }
+
+      &:hover a,
+      &.current a {
+        background-color: $pagination-active-bg;
+        color: $pagination-active-color;
       }
 
       &.current a {
-        background-color: $primary;
         cursor: default;
-        color: #fff;
       }
 
       &.disabled a {
-        background-color: #fff;
+        color: $pagination-disabled-color;
         cursor: default;
-        color: #ccc;
+        pointer-events: none;
       }
     }
   }

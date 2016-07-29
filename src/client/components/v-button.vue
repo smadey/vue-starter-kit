@@ -97,6 +97,12 @@
       color: $btn-primary-color;
     }
 
+    &-warning {
+      background-color: $btn-warning-bg;
+      border-color: $btn-warning-border;
+      color: $btn-warning-color;
+    }
+
     &-danger {
       background-color: $btn-danger-bg;
       border-color: $btn-danger-border;

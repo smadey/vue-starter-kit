@@ -1,5 +1,8 @@
 <template>
   <div class="app container">
+    <v-steps :steps="['step1', 'step2', 'step3', 'step4', 'step5']"
+      :current-step-index="3" :step-component="stepComponent"></v-steps>
+
     <v-scroll-magic v-if="phases.length" :phases="phases">
       <div class="imgs">
         <div class="img img-1"></div>
@@ -29,16 +32,24 @@
 
   import vScrollMagic from '../components/v-scroll-magic.vue';
 
+  import vSteps from '../components/v-steps.vue';
+
   export default {
     mixins: [modalMixin],
 
     components: {
       vScrollMagic,
+      vSteps,
+      step: {
+        template: '<div class="step-item">This is step "{{step}}"</div>',
+        props: ['step'],
+      },
     },
 
     data() {
       return {
         phase: 0,
+        stepComponent: this.$options.components.step,
         phases: [
           {
             target: '.img-1',
@@ -106,58 +117,48 @@
   .app {
     // background: url('../img/logo.png') 50% 50% / 200px 200px no-repeat;
     height: 100%;
-  }
 
-  .v-scroll-magic {
-    margin-bottom: 1000px;
-    margin-top: 600px;
+    .v-scroll-magic {
+      margin-bottom: 1000px;
+      margin-top: 600px;
 
-    .imgs {
-      height: 511px;
-      position: relative;
+      .imgs {
+        height: 511px;
+        position: relative;
 
-      .img {
-        background-position: 50% 50%;
-        background-repeat: no-repeat;
-        background-size: cover;
-        height: 100%;
-        left: 0;
-        opacity: 0;
-        position: absolute;
-        top: 0;
-        width: 100%;
+        .img {
+          background-position: 50% 50%;
+          background-repeat: no-repeat;
+          background-size: cover;
+          height: 100%;
+          left: 0;
+          opacity: 0;
+          position: absolute;
+          top: 0;
+          width: 100%;
 
-        &-1 {
-          background-image: url('http://qidian.gtimg.com/yuewen/v1/css/images/yw-hd-bg-1_l.jpg');
-        }
+          &-1 {
+            background-image: url('http://qidian.gtimg.com/yuewen/v1/css/images/yw-hd-bg-1_l.jpg');
+          }
 
-        &-2 {
-          background-image: url('http://qidian.gtimg.com/yuewen/v1/css/images/yw-hd-bg-2_l.jpg');
-        }
+          &-2 {
+            background-image: url('http://qidian.gtimg.com/yuewen/v1/css/images/yw-hd-bg-2_l.jpg');
+          }
 
-        &-3 {
-          background-image: url('http://qidian.gtimg.com/yuewen/v1/css/images/yw-hd-bg-3_l.jpg');
+          &-3 {
+            background-image: url('http://qidian.gtimg.com/yuewen/v1/css/images/yw-hd-bg-3_l.jpg');
+          }
         }
       }
-    }
 
-    ul {
-      margin-top: 50px;
-      text-align: center;
-    }
+      ul {
+        margin-top: 50px;
+        text-align: center;
 
-    .fade-leave {
-      transition: none;
-    }
-  }
-
-  .fade {
-    &-transition {
-      transition: opacity ease-out .2s;
-    }
-
-    &-enter, &-leave {
-      opacity: 0;
+        .fade-leave {
+          transition: none;
+        }
+      }
     }
   }
 

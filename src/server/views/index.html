@@ -191,9 +191,11 @@
     (function () {
       function completed() {
         document.removeEventListener('DOMContentLoaded', completed);
-        document.getElementById('loading-css').remove();
-        document.getElementById('loading').remove();
-        document.getElementById('loading-js').remove();
+
+        var parent = document.getElementById('loading-css').parentNode;
+        parent.removeChild(document.getElementById('loading-css'));
+        parent.removeChild(document.getElementById('loading'));
+        parent.removeChild(document.getElementById('loading-js'));
       }
 
       document.addEventListener('DOMContentLoaded', completed);
